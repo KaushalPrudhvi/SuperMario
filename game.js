@@ -3,6 +3,7 @@ const JUMP_FORCE = 360;
 const BIG_JUMP_FORCE = 550;
 
 let CURRENT_JUMP_FORCE = JUMP_FORCE;
+const ENEMY_SPEED = 20;
 kaboom({
   global: true,
   // enable full screen
@@ -84,7 +85,7 @@ scene("game", () => {
 
     "+": [sprite("pipe-top-right"), solid(), scale(0.5)],
 
-    "^": [sprite("evil-shroom"), solid()],
+    "^": [sprite("evil-shroom"), solid(), "dangerous"],
     //body() is used for gravity
     "#": [sprite("mushroom"), solid(), "mushroom", body()],
   };
@@ -199,6 +200,20 @@ scene("game", () => {
     // then display the score
     scoreLabel.text = scoreLabel.value;
   });
+
+  // Let us make evils move
+  action("dangerous", (d) => {
+    d.move(-ENEMY_SPEED, 0);
+  });
+
+  // if player collides with anythig with dangerous
+  // big mario becomes small
+  // small mario dies
+
+  player.collides("dangerous", (d) => {
+    // go to a lose scene and display the final score
+    go("lose", { score: scoreLabel.value });
+  });
   // keyDown is a method that takes inpiut from keyboard,
   // So  if we press left key , the arrow function will be executed
 
@@ -219,6 +234,10 @@ scene("game", () => {
     }
   });
   // load in some sprites
+});
+
+scene("lose", ({ score }) => {
+  add([text(score, 32), origin("center"), pos(width() / 2, height() / 2)]);
 });
 
 start("game");
