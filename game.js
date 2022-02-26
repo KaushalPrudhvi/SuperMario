@@ -1,9 +1,9 @@
 const MOVE_SPEED = 120;
 const JUMP_FORCE = 360;
 const BIG_JUMP_FORCE = 550;
-
 let CURRENT_JUMP_FORCE = JUMP_FORCE;
 const ENEMY_SPEED = 20;
+const isJumping = true;
 kaboom({
   global: true,
   // enable full screen
@@ -45,7 +45,7 @@ loadSprite("pipe-bottom-left", "c1cYSbt.png");
 
 loadSprite("pipe-bottom-right", "nqQ79eI.png");
 
-scene("game", () => {
+scene("game", ({ score }) => {
   //create layers
   //An array
   // background layer, object layer as default, UI layer
@@ -96,11 +96,11 @@ scene("game", () => {
   // so change layer to 'ui' for adding score
   //define this as a method so that it can be passed to other levels
   const scoreLabel = add([
-    text("test"),
+    text(score),
     pos(30, 6),
     layer("ui"),
     {
-      value: "test",
+      value: score,
     },
   ]);
 
@@ -226,9 +226,18 @@ scene("game", () => {
     // right we need to have plus direction
     player.move(MOVE_SPEED, 0);
   });
+  // So during any action if the player is grounded
+  // then make isJumping to false
+  player.action(() => {
+    if (player.grounded()) {
+      isJumping = false;
+    }
+  });
   //keyPress is a JS method especially used here to make use of space key to jump
   keyPress("space", () => {
     if (player.grounded()) {
+      // Make is Jumping to true when a space is pressed
+      isJumping = true;
       // jump with current jump force big or small mario force
       player.jump(CURRENT_JUMP_FORCE);
     }
@@ -240,4 +249,4 @@ scene("lose", ({ score }) => {
   add([text(score, 32), origin("center"), pos(width() / 2, height() / 2)]);
 });
 
-start("game");
+start("game", { score: 0 });
