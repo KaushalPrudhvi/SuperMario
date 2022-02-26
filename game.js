@@ -15,11 +15,11 @@ loadSprite("coin", "wbKxhcd.png");
 
 //enenmies
 
-loadSprite("evil-shroom", "KP03fR9.png");
+loadSprite("evil-shroom", "KPO3fR9.png");
 //bricks
 loadSprite("brick", "pogC9x5.png");
 //blocks
-loadSprite("block", "bdrLpi6.png");
+loadSprite("block", "M6rwarW.png");
 
 //mario
 
@@ -46,6 +46,75 @@ scene("game", () => {
   // initialise with obj as default
   layers(["bg", "obj", "ui"], "obj");
   // draw maps
+  const map = [
+    "                                                       ",
+    "                                                       ",
+    "                                                       ",
+    "                                                       ",
+    "                                                       ",
+    "                                                       ",
+    "     %    =*=%=                                                  ",
+    "                           -+                            ",
+    "                 ^   ^     ()                                      ",
+    "===============================   ==================== ",
+  ];
+
+  //level configuration
+  const levelCfg = {
+    //every sprite has a wdith and height
+    width: 20,
+    height: 20,
+    "=": [sprite("block"), solid()],
+    $: [sprite("coin")],
+    "%": [sprite("surprise"), solid(), "coin-surprise"],
+    "*": [sprite("surprise"), solid(), "mushroom-surprise"],
+    "}": [sprite("unboxed"), solid()],
+    "(": [sprite("pipe-bottom-left"), solid(), scale(0.5)],
+
+    ")": [sprite("pipe-bottom-right"), solid(), scale(0.5)],
+
+    "-": [sprite("pipe-top-left"), solid(), scale(0.5)],
+
+    "+": [sprite("pipe-top-right"), solid(), scale(0.5)],
+
+    "^": [sprite("evil-shroom"), solid()],
+
+    "#": [sprite("mushroom"), solid()],
+  };
+  // now just create a  gamelevel(JS method) and pass the map and levelCfg
+  const gameLevel = addLevel(map, levelCfg);
+  // add some text to display score and position on UI layer
+  // default layer is 'obj '
+  // so change layer to 'ui' for adding score
+  //define this as a method so that it can be passed to other levels
+  const scoreLabel = add([
+    text("test"),
+    pos(30, 6),
+    layer("ui"),
+    {
+      value: "test",
+    },
+  ]);
+
+  // add a text to define which level we currently are in
+  add([text("level " + "test", pos(4, 6))]);
+  // create mario
+  const player = add([
+    sprite("mario"),
+    solid(),
+    pos(20, 0),
+    body(),
+    origin("bot"),
+  ]);
+  // keyDown is a method that takes inpiut from keyboard,
+  // So  if we press left key , the arrow function will be executed
+  const MOVE_SPEED = 120;
+
+  keyDown("left", () => {
+    // left we need to have minus
+    player.move(-MOVE_SPEED, 0);
+  });
+
   // load in some sprites
 });
 
