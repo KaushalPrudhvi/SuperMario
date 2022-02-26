@@ -9,7 +9,23 @@ kaboom({
 });
 
 //add scenes
-loadSprite();
+//coins
+loadRoot("https://i.imgur.com/");
+loadSprite("coin", "wbKxhcd.png");
+
+//enenmies
+
+loadSprite("evil-shroom", "KP03fR9.png");
+//bricks
+loadSprite("brick", "pogC9x5.png");
+//blocks
+loadSprite("block", "bdrLpi6.png");
+
+//mario
+
+loadSprite("mario", "Wb1qfhK.png");
+
+loadSprite("mushroom", "0wMd92p.png");
 scene("game", () => {
   //create layers
   //An array
