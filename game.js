@@ -46,6 +46,16 @@ loadSprite("pipe-bottom-left", "c1cYSbt.png");
 
 loadSprite("pipe-bottom-right", "nqQ79eI.png");
 
+loadSprite("blue-block", "fVscIbn.png");
+
+loadSprite("blue-brick", "3e5YRQd.png");
+
+loadSprite("blue-steel", "gqVoI2b.png");
+
+loadSprite("blue-evil-shroom", "SvV4ueD.png");
+
+loadSprite("blue-surprise", "RMqCc1G.png");
+
 scene("game", ({ level, score }) => {
   //create layers
   //An array
@@ -53,17 +63,31 @@ scene("game", ({ level, score }) => {
   // initialise with obj as default
   layers(["bg", "obj", "ui"], "obj");
   // draw maps
-  const map = [
-    "                                                       ",
-    "                                                       ",
-    "                                                       ",
-    "                                                       ",
-    "                                                       ",
-    "                                                       ",
-    "     %    =*=%=                                                  ",
-    "                           -+                            ",
-    "                 ^   ^     ()                                      ",
-    "===============================   ==================== ",
+  const maps = [
+    [
+      "                                                       ",
+      "                                                       ",
+      "                                                       ",
+      "                                                       ",
+      "                                                       ",
+      "                                                       ",
+      "     %    =*=%=                                        ",
+      "                           -+                          ",
+      "                 ^   ^     ()                          ",
+      "===============================   ==================== ",
+    ],
+    [
+      "£                                                       £",
+      "£                                                       £",
+      "£                                                       £",
+      "£                                                       £",
+      "£                                                       £",
+      "£                               x                       £",
+      "£     %    @@@@@@              xx                       £",
+      "£                             xxx                -+     £",
+      "£                 z   z      xxxx                ()     £",
+      "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
+    ],
   ];
 
   //level configuration
@@ -82,16 +106,23 @@ scene("game", ({ level, score }) => {
 
     ")": [sprite("pipe-bottom-right"), solid(), scale(0.5)],
 
-    "-": [sprite("pipe-top-left"), solid(), scale(0.5)],
+    "-": [sprite("pipe-top-left"), solid(), scale(0.5), "pipe"],
 
-    "+": [sprite("pipe-top-right"), solid(), scale(0.5)],
+    "+": [sprite("pipe-top-right"), solid(), scale(0.5), "pipe"],
 
     "^": [sprite("evil-shroom"), solid(), "dangerous"],
     //body() is used for gravity
     "#": [sprite("mushroom"), solid(), "mushroom", body()],
+
+    "!": [sprite("blue-block"), solid(), scale(0.5)],
+    "£": [sprite("blue-brick"), solid(), scale(0.5)],
+
+    z: [sprite("blue-evil-shroom"), solid(), scale(0.5), "dangerous"],
+    "@": [sprite("blue-surprise"), solid(), scale(0.5), "coin-surprise"],
+    x: [sprite("blue-steel"), solid(), scale(0.5)],
   };
   // now just create a  gamelevel(JS method) and pass the map and levelCfg
-  const gameLevel = addLevel(map, levelCfg);
+  const gameLevel = addLevel(maps[level], levelCfg);
   // add some text to display score and position on UI layer
   // default layer is 'obj '
   // so change layer to 'ui' for adding score
