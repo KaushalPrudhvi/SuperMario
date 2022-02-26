@@ -1,3 +1,6 @@
+const MOVE_SPEED = 120;
+const JUMP_FORCE = 360;
+
 kaboom({
   global: true,
   // enable full screen
@@ -66,6 +69,7 @@ scene("game", () => {
     height: 20,
     "=": [sprite("block"), solid()],
     $: [sprite("coin")],
+    // parameters 1: name, 2: solid , 3: tag
     "%": [sprite("surprise"), solid(), "coin-surprise"],
     "*": [sprite("surprise"), solid(), "mushroom-surprise"],
     "}": [sprite("unboxed"), solid()],
@@ -79,7 +83,7 @@ scene("game", () => {
 
     "^": [sprite("evil-shroom"), solid()],
 
-    "#": [sprite("mushroom"), solid()],
+    "#": [sprite("mushroom"), solid(), "mushroom"],
   };
   // now just create a  gamelevel(JS method) and pass the map and levelCfg
   const gameLevel = addLevel(map, levelCfg);
@@ -98,23 +102,96 @@ scene("game", () => {
 
   // add a text to define which level we currently are in
   add([text("level " + "test", pos(4, 6))]);
+
+  function big() {
+    let timer = 0;
+    let isBig = false;
+    return {
+      update() {
+        if (isBig) {
+          //delta time is a JS method ""time since last frame"
+          timer -= dt();
+          if (timer <= 0) {
+            //if time <0 then we have to make mario small
+            this.smallify();
+          }
+        }
+      },
+      isBig() {
+        return isBig;
+      },
+      smallify() {
+        this.scale = vec2(1, 1);
+        timer = 0;
+        isBig = false;
+      },
+
+      biggify(time) {
+        this.scale = vec2(2);
+        timer = time;
+        isBig = true;
+      },
+    };
+  }
   // create mario
   const player = add([
     sprite("mario"),
     solid(),
     pos(20, 0),
     body(),
+    big(),
     origin("bot"),
   ]);
+
+  //Now make the mushroom move
+  // Whenever you grab anything with a tag of mushroom,
+  action("mushroom", (m) => {
+    m.move(10, 0);
+    // but here the mushrrom wont fall'
+    // So we need to add gravity
+  });
+
+  player.on("headbump", (obj) => {
+    // we will check if he bumped an object and if the name of the object happens to be a coin surprise
+    // return a coin
+    if (obj.is("coin-surprise")) {
+      // Now spawn the coin and place the coin just above the grid 1 pos above along Y axis
+      gameLevel.spawn("$", obj.gridPos.sub(0, 1));
+      // Now destroy the old one
+      destroy(obj);
+      // after destroying replace with an unboxed so that he cam jump onto it and collect the coin
+      gameLevel.spawn("}", obj.gridPos.sub(0, 0));
+    }
+
+    if (obj.is("mushroom-surprise")) {
+      // Now spawn the mushroom and place the mushroom just above the grid 1 pos above along Y axis
+      gameLevel.spawn("#", obj.gridPos.sub(0, 1));
+      // Now destroy the old one
+      destroy(obj);
+      // after destroying replace with an unboxed so that he cam jump onto it and collect the mushroom
+      gameLevel.spawn("}", obj.gridPos.sub(0, 0));
+    }
+  });
+
   // keyDown is a method that takes inpiut from keyboard,
   // So  if we press left key , the arrow function will be executed
-  const MOVE_SPEED = 120;
 
   keyDown("left", () => {
     // left we need to have minus
     player.move(-MOVE_SPEED, 0);
   });
 
+  keyDown("right", () => {
+    // left we need to have minus
+    player.move(MOVE_SPEED, 0);
+  });
+  //keyPress is a JS method especially used here to make use of space key to jump
+  keyPress("space", () => {
+    // left we need to have minus
+    if (player.grounded()) {
+      player.jump(JUMP_FORCE);
+    }
+  });
   // load in some sprites
 });
 
