@@ -1,6 +1,8 @@
 const MOVE_SPEED = 120;
 const JUMP_FORCE = 360;
+const BIG_JUMP_FORCE = 550;
 
+let CURRENT_JUMP_FORCE = JUMP_FORCE;
 kaboom({
   global: true,
   // enable full screen
@@ -67,9 +69,10 @@ scene("game", () => {
     //every sprite has a wdith and height
     width: 20,
     height: 20,
+    // parameters 1: name of the sprite, 2: solid , 3: tag
+
     "=": [sprite("block"), solid()],
-    $: [sprite("coin")],
-    // parameters 1: name, 2: solid , 3: tag
+    $: [sprite("coin"), "coin"],
     "%": [sprite("surprise"), solid(), "coin-surprise"],
     "*": [sprite("surprise"), solid(), "mushroom-surprise"],
     "}": [sprite("unboxed"), solid()],
@@ -82,8 +85,8 @@ scene("game", () => {
     "+": [sprite("pipe-top-right"), solid(), scale(0.5)],
 
     "^": [sprite("evil-shroom"), solid()],
-
-    "#": [sprite("mushroom"), solid(), "mushroom"],
+    //body() is used for gravity
+    "#": [sprite("mushroom"), solid(), "mushroom", body()],
   };
   // now just create a  gamelevel(JS method) and pass the map and levelCfg
   const gameLevel = addLevel(map, levelCfg);
@@ -109,6 +112,9 @@ scene("game", () => {
     return {
       update() {
         if (isBig) {
+          // change the jump force
+          CURRENT_JUMP_FORCE = BIG_JUMP_FORCE;
+
           //delta time is a JS method ""time since last frame"
           timer -= dt();
           if (timer <= 0) {
@@ -122,12 +128,15 @@ scene("game", () => {
       },
       smallify() {
         this.scale = vec2(1, 1);
+
+        CURRENT_JUMP_FORCE = JUMP_FORCE;
         timer = 0;
         isBig = false;
       },
 
       biggify(time) {
         this.scale = vec2(2);
+
         timer = time;
         isBig = true;
       },
@@ -146,7 +155,8 @@ scene("game", () => {
   //Now make the mushroom move
   // Whenever you grab anything with a tag of mushroom,
   action("mushroom", (m) => {
-    m.move(10, 0);
+    // speed= 20
+    m.move(20, 0);
     // but here the mushrrom wont fall'
     // So we need to add gravity
   });
@@ -173,23 +183,39 @@ scene("game", () => {
     }
   });
 
+  player.collides("mushroom", (m) => {
+    // pick a mushroom and destroy the object
+    destroy(m);
+    //Now biggify for 6 seconds
+    player.biggify(6);
+  });
+
+  player.collides("coin", (c) => {
+    destroy(c);
+    // increase the value of the score
+
+    scoreLabel.value++;
+
+    // then display the score
+    scoreLabel.text = scoreLabel.value;
+  });
   // keyDown is a method that takes inpiut from keyboard,
   // So  if we press left key , the arrow function will be executed
 
   keyDown("left", () => {
-    // left we need to have minus
+    // left we need to have minus direction
     player.move(-MOVE_SPEED, 0);
   });
 
   keyDown("right", () => {
-    // left we need to have minus
+    // right we need to have plus direction
     player.move(MOVE_SPEED, 0);
   });
   //keyPress is a JS method especially used here to make use of space key to jump
   keyPress("space", () => {
-    // left we need to have minus
     if (player.grounded()) {
-      player.jump(JUMP_FORCE);
+      // jump with current jump force big or small mario force
+      player.jump(CURRENT_JUMP_FORCE);
     }
   });
   // load in some sprites
