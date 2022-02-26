@@ -3,7 +3,8 @@ const JUMP_FORCE = 360;
 const BIG_JUMP_FORCE = 550;
 let CURRENT_JUMP_FORCE = JUMP_FORCE;
 const ENEMY_SPEED = 20;
-const isJumping = true;
+let isJumping = true;
+const FALL_DEATH = 400;
 kaboom({
   global: true,
   // enable full screen
@@ -211,8 +212,21 @@ scene("game", ({ score }) => {
   // small mario dies
 
   player.collides("dangerous", (d) => {
-    // go to a lose scene and display the final score
-    go("lose", { score: scoreLabel.value });
+    if (isJumping) {
+      destroy(d);
+    } else {
+      // go to a lose scene and display the final score
+      go("lose", { score: scoreLabel.value });
+    }
+  });
+
+  player.action(() => {
+    // Make camera Position same as player position
+    camPos(player.pos);
+    // So whenever the y coordinate of the player is greater than death value then go to lose scene
+    if (player.pos.y >= FALL_DEATH) {
+      go("lose", { score: scoreLabel.value });
+    }
   });
   // keyDown is a method that takes inpiut from keyboard,
   // So  if we press left key , the arrow function will be executed
