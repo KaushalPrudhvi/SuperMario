@@ -46,7 +46,7 @@ loadSprite("pipe-bottom-left", "c1cYSbt.png");
 
 loadSprite("pipe-bottom-right", "nqQ79eI.png");
 
-scene("game", ({ score }) => {
+scene("game", ({ level, score }) => {
   //create layers
   //An array
   // background layer, object layer as default, UI layer
@@ -106,7 +106,8 @@ scene("game", ({ score }) => {
   ]);
 
   // add a text to define which level we currently are in
-  add([text("level " + "test", pos(4, 6))]);
+  // parameters for add are text, position
+  add([text("level " + parseInt(level + 1)), pos(40, 6)]);
 
   function big() {
     let timer = 0;
@@ -247,6 +248,14 @@ scene("game", ({ score }) => {
       isJumping = false;
     }
   });
+  // if the player collides with any tag name pipe and presses KeyDown (for that case anykey you wish)
+  //then he has to go to Next Level
+  // or create a house and then use the key desired
+  player.collides("pipe", () => {
+    keyPress("down", () => {
+      go("game", { level: level + 1, score: scoreLabel.value });
+    });
+  });
   //keyPress is a JS method especially used here to make use of space key to jump
   keyPress("space", () => {
     if (player.grounded()) {
@@ -263,4 +272,4 @@ scene("lose", ({ score }) => {
   add([text(score, 32), origin("center"), pos(width() / 2, height() / 2)]);
 });
 
-start("game", { score: 0 });
+start("game", { level: 0, score: 0 });
