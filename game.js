@@ -71,14 +71,21 @@ scene("game", ({ level, score }) => {
       "                                                       ",
       "                                                       ",
       "                                                       ",
+      "                                                       ",
+      "                                                       ",
+      "                                                       ",
+      "                                                       ",
+      "                                                       ",
+      "                                                       ",
+      "                                                       ",
       "     %    =*=%=                                        ",
-      "                           -+                          ",
-      "                 ^   ^     ()                          ",
-      "===============================   ==================== ",
+      "                          -+                  -+       ",
+      "                 ^   ^    ()            ^     ()  ^        ",
+      "===============================   ==  = ===  ============== ",
     ],
     [
       "£                                                       £",
-      "£                                                       £",
+      "£     ! ! ! ! ! ! ! ! ! ! ! !                           £",
       "£                                                       £",
       "£                                                       £",
       "£                                                       £",
@@ -86,7 +93,19 @@ scene("game", ({ level, score }) => {
       "£     %    @@@@@@              xx                       £",
       "£                             xxx                -+     £",
       "£                 z   z      xxxx                ()     £",
-      "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  !!!!!!!!!!!!!!!!!!!!",
+    ],
+    [
+      "£                                                       £",
+      "£     ! ! ! ! ! ! ! ! ! ! ! !                                                  £",
+      "£                                                       £",
+      "£                                                       £",
+      "£                                                       £",
+      "£                               x                       £",
+      "£     %    @@@@@@              xx                       £",
+      "£                             xxx                -+     £",
+      "£                      z   z      xxxx           ()     £",
+      "!!!!!!!!!!!!!!!!!  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
     ],
   ];
 
@@ -111,6 +130,7 @@ scene("game", ({ level, score }) => {
     "+": [sprite("pipe-top-right"), solid(), scale(0.5), "pipe"],
 
     "^": [sprite("evil-shroom"), solid(), "dangerous"],
+
     //body() is used for gravity
     "#": [sprite("mushroom"), solid(), "mushroom", body()],
 
@@ -191,6 +211,7 @@ scene("game", ({ level, score }) => {
   action("mushroom", (m) => {
     // speed= 20
     m.move(20, 0);
+
     // but here the mushrrom wont fall'
     // So we need to add gravity
   });
@@ -238,7 +259,6 @@ scene("game", ({ level, score }) => {
   action("dangerous", (d) => {
     d.move(-ENEMY_SPEED, 0);
   });
-
   // if player collides with anythig with dangerous
   // big mario becomes small
   // small mario dies
@@ -254,12 +274,15 @@ scene("game", ({ level, score }) => {
 
   player.action(() => {
     // Make camera Position same as player position
+
     camPos(player.pos);
+
     // So whenever the y coordinate of the player is greater than death value then go to lose scene
     if (player.pos.y >= FALL_DEATH) {
       go("lose", { score: scoreLabel.value });
     }
   });
+
   // keyDown is a method that takes inpiut from keyboard,
   // So  if we press left key , the arrow function will be executed
 
@@ -303,4 +326,5 @@ scene("lose", ({ score }) => {
   add([text(score, 32), origin("center"), pos(width() / 2, height() / 2)]);
 });
 
+//init();
 start("game", { level: 0, score: 0 });
