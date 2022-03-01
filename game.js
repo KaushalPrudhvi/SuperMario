@@ -73,10 +73,10 @@ scene("game", ({ level, score }) => {
       "                                                       ",
       "                                                       ",
       "                                                       ",
+      "         ============================                                              ",
       "                                                       ",
       "                                                       ",
-      "                                                       ",
-      "                                                       ",
+      "         ^^^^^^^^^^^^^^^^^^                                              ",
       "                                                       ",
       "     %    =*=%=                                        ",
       "                          -+                  -+       ",
@@ -104,7 +104,7 @@ scene("game", ({ level, score }) => {
       "£                               x                       £",
       "£     %    @@@@@@              xx                       £",
       "£                             xxx                -+     £",
-      "£                      z   z      xxxx           ()     £",
+      "£     zzzzzzzzz                 zzzzzzzzzzz  z      xxxx           ()     £",
       "!!!!!!!!!!!!!!!!!  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
     ],
   ];
@@ -257,7 +257,7 @@ scene("game", ({ level, score }) => {
 
   // Let us make evils move
   action("dangerous", (d) => {
-    d.move(-ENEMY_SPEED, 0);
+    d.move(-ENEMY_SPEED * 3, 0);
   });
   // if player collides with anythig with dangerous
   // big mario becomes small
