@@ -129,7 +129,7 @@ scene("game", ({ level, score }) => {
 
     "+": [sprite("pipe-top-right"), solid(), scale(0.5), "pipe"],
 
-    "^": [sprite("evil-shroom"), solid(), "dangerous"],
+    "^": [sprite("evil-shroom"), solid(), body(), "dangerous"],
 
     //body() is used for gravity
     "#": [sprite("mushroom"), solid(), "mushroom", body()],
@@ -137,7 +137,7 @@ scene("game", ({ level, score }) => {
     "!": [sprite("blue-block"), solid(), scale(0.5)],
     "£": [sprite("blue-brick"), solid(), scale(0.5)],
 
-    z: [sprite("blue-evil-shroom"), solid(), scale(0.5), "dangerous"],
+    z: [sprite("blue-evil-shroom"), solid(), scale(0.5), body(), "dangerous"],
     "@": [sprite("blue-surprise"), solid(), scale(0.5), "coin-surprise"],
     x: [sprite("blue-steel"), solid(), scale(0.5)],
   };
