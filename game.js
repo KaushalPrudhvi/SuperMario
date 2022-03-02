@@ -5,6 +5,7 @@ let CURRENT_JUMP_FORCE = JUMP_FORCE;
 const ENEMY_SPEED = 20;
 let isJumping = true;
 const FALL_DEATH = 400;
+const TIME_LEFT = 10;
 kaboom({
   global: true,
   // enable full screen
@@ -76,7 +77,7 @@ scene("game", ({ level, score }) => {
       "         ============================                                              ",
       "                                                       ",
       "                                                       ",
-      "         ^^^^^^^^^^^^^^^^^^                                              ",
+      "                                                       ",
       "                                                       ",
       "     %    =*=%=                                        ",
       "                          -+                  -+       ",
@@ -275,7 +276,7 @@ scene("game", ({ level, score }) => {
   player.action(() => {
     // Make camera Position same as player position
 
-    camPos(player.pos);
+    // camPos(player.pos);
 
     // So whenever the y coordinate of the player is greater than death value then go to lose scene
     if (player.pos.y >= FALL_DEATH) {
@@ -320,6 +321,20 @@ scene("game", ({ level, score }) => {
     }
   });
   // load in some sprites
+  const timer = add([
+    text("0"),
+    pos(90, 70),
+    scale(1),
+    layer("ui"),
+    { time: TIME_LEFT },
+  ]);
+
+  timer.action(() => {
+    (timer.time -= dt()), (timer.text = timer.time.toFixed(2));
+    if (timer.time <= 0) {
+      go("lose", { score: scoreLabel.value });
+    }
+  });
 });
 
 scene("lose", ({ score }) => {
