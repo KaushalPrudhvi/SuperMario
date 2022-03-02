@@ -6,6 +6,7 @@ const ENEMY_SPEED = 20;
 let isJumping = true;
 const FALL_DEATH = 400;
 const TIME_LEFT = 50;
+const BULLET_TIME_LEFT = 2;
 let isBig = false;
 kaboom({
   global: true,
@@ -58,6 +59,13 @@ loadSprite("blue-evil-shroom", "SvV4ueD.png");
 
 loadSprite("blue-surprise", "RMqCc1G.png");
 
+loadSprite("left", "agdsuPW.png");
+
+loadSprite("right", "7SNgoAe.png");
+
+loadSprite("highjump", "xfWsMOV.png");
+
+loadSprite("shoot", "mPlhKAi.png");
 scene("game", ({ level, score }) => {
   //create layers
   //An array
@@ -314,15 +322,21 @@ scene("game", ({ level, score }) => {
       go("game", { level: level + 1, score: scoreLabel.value });
     });
   });
-  //keyPress is a JS method especially used here to make use of space key to jump
-  keyPress("space", () => {
+
+  // we will define a function jump so that it can be reused both by touch and keyboard
+
+  const jumping = () => {
     if (player.grounded()) {
       // Make is Jumping to true when a space is pressed
       isJumping = true;
       // jump with current jump force big or small mario force
       player.jump(CURRENT_JUMP_FORCE);
     }
-  });
+  };
+  // similarly we can add for bullet
+
+  //keyPress is a JS method especially used here to make use of space key to jump
+  keyPress("space", jumping);
 
   // timer functionality in game scene
   const timer = add([
@@ -331,6 +345,12 @@ scene("game", ({ level, score }) => {
     scale(1),
     layer("ui"),
     { time: TIME_LEFT },
+  ]);
+
+  const bulletTimer = add([
+    {
+      time: BULLET_TIME_LEFT,
+    },
   ]);
 
   timer.action(() => {
@@ -351,19 +371,181 @@ scene("game", ({ level, score }) => {
   // Releasing bullet functionality
   keyPress("b", () => {
     //if (isBig)
+    // set the bullet time
+    bulletTimer.time = BULLET_TIME_LEFT;
     spawnBullet(player.pos.add(25, -10));
   });
 
   //move the bullets
   action("bullet", (b) => {
-    destroy(b);
+    //destroy(b);
+
     b.move(ENEMY_SPEED * 3, 0);
+    // whenever a bullet is released decrement the time given to it.
+    bulletTimer.time -= dt();
+    if (bulletTimer.time <= 0) {
+      destroy(b);
+    }
   });
 
   collides("dangerous", "bullet", (d, b) => {
     destroy(d);
     destroy(b);
   });
+
+  // The mobile version begins
+  //The following is for the mobile support
+
+  const moveLeft = () => {
+    player.move(-MOVE_SPEED, 0);
+  };
+
+  const moveRight = () => {
+    player.move(MOVE_SPEED, 0);
+  };
+
+  keyDown("left", () => {
+    keyDownOnMobile.left = true;
+  });
+
+  keyDown("right", () => {
+    keyDownOnMobile.right = true;
+  });
+
+  keyRelease("left", () => {
+    keyDownOnMobile.left = false;
+  });
+
+  keyRelease("right", () => {
+    keyDownOnMobile.right = false;
+  });
+
+  const leftButton = add([
+    sprite("left"),
+    pos(10, height() - 100),
+    //(opacity = 0.5),
+    //fixed(),
+    area(),
+  ]);
+
+  const rightButton = add([
+    sprite("right"),
+    pos(10, height() - 100),
+    //(opacity = 0.5),
+    //fixed(),
+    area(),
+  ]);
+
+  const actionButton = add([
+    sprite("highjump"),
+    pos(10, height() - 100),
+    //(opacity = 0.5),
+    //fixed(),
+    area(),
+  ]);
+
+  const shootButton = add([
+    sprite("shoot"),
+    pos(10, height() - 100),
+    //(opacity = 0.5),
+    // fixed(),
+    area(),
+  ]);
+  //because left and right buttons will be pressed
+  //we need to keep track of them
+  const keyDownOnMobile = {
+    left: false,
+    right: false,
+    // we will set them to true when these buttons are tocuhed
+  };
+
+  // onTouchStart gets called each time a new touch event is registered
+  onTouchStart((id, pos) => {
+    // we will check if the touch overlaps with the left button
+    if (leftButton.hasPoint(pos)) {
+      keyDownOnMobile.left = true;
+      leftButton.opacity = 1;
+    } else if (rightButton.hasPoint(pos)) {
+      keyDownOnMobile.right = true;
+      rightButton.opacity = 1;
+    } else if (jumpButton.hasPoint(pos)) {
+      jumping();
+      jumpButton.opacity = 1;
+    } else if (shootButton.hasPoint(pos)) {
+      spawnBullet(player.pos.add(25, -10));
+
+      shootButton.opacity = 1;
+    }
+  });
+  // But we if dont take the fingers off the screen then the touch persists so we need to make changes on
+  // onTouchEnd by using async functionality
+
+  const onTouchChanged = (_, pos) => {
+    // if the button is used for touch event registration and else is used for touch event de-registration
+    if (!leftButton.hasPoint(pos)) {
+      keyDownOnMobile.left = false;
+      leftButton.opacity = 0.5;
+    } else {
+      keyDownOnMobile.left = true;
+      leftButton.opacity = 1;
+    }
+
+    if (!rightButton.hasPoint(pos)) {
+      keyDownOnMobile.right = false;
+      rightButton.opacity = 0.5;
+    } else {
+      keyDownOnMobile.right = true;
+      rightButton.opacity = 1;
+    }
+
+    if (!jumpButton.hasPoint(pos)) {
+      jumpButton.opacity = 0.5;
+    } else {
+      jumpButton.opacity = 1;
+    }
+
+    if (!shootButton.hasPoint(pos)) {
+      shootButton.opacity = 0.5;
+    } else {
+      shootButton.opacity = 1;
+    }
+  };
+
+  // onTouchMove
+
+  onTouchMove(onTouchChanged);
+  onTouchEnd(onTouchChanged);
+  // onTouchEnd
+  /*
+  onTouchEnd((_, pos) => {
+    if (!leftButton.hasPoint(pos)) {
+      keyDownOnMobile.left = false;
+      leftButton.opacity = 0.5;
+    }
+
+    if (!rightButton.hasPoint(pos)) {
+      keyDownOnMobile.right = false;
+      rightButton.opacity = 0.5;
+    }
+
+    if (!jumpButton.hasPoint(pos)) {
+      jumpButton.opacity = 0.5;
+    }
+
+    if (!shootButton.hasPoint(pos)) {
+      shootButton.opacity = 0.5;
+    }
+  });
+*/
+  onUpdate(() => {
+    if (keyDown.left) {
+      moveLeft();
+    } else if (keyDown.right) {
+      moveRight();
+    }
+  });
+
+  //The mobile version ends
 });
 
 scene("lose", ({ score }) => {
