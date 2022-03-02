@@ -6,6 +6,7 @@ const ENEMY_SPEED = 20;
 let isJumping = true;
 const FALL_DEATH = 400;
 const TIME_LEFT = 50;
+let isBig = false;
 kaboom({
   global: true,
   // enable full screen
@@ -81,7 +82,7 @@ scene("game", ({ level, score }) => {
       "                                                       ",
       "     %    =*=%=                                        ",
       "                          -+                  -+       ",
-      "           ^^^^^^^^^^      ^   ^    ()            ^     ()  ^        ",
+      "           ^      ^   ^    ()            ^     ()  ^        ",
       "===============================   ==  = ===  ============== ",
     ],
     [
@@ -117,6 +118,7 @@ scene("game", ({ level, score }) => {
     height: 20,
     // parameters 1: name of the sprite, 2: solid , 3: tag
 
+    // load in some sprites
     "=": [sprite("block"), solid()],
     $: [sprite("coin"), "coin"],
     "%": [sprite("surprise"), solid(), "coin-surprise"],
@@ -163,7 +165,7 @@ scene("game", ({ level, score }) => {
 
   function big() {
     let timer = 0;
-    let isBig = false;
+    // let isBig = false;
     return {
       update() {
         if (isBig) {
@@ -321,7 +323,8 @@ scene("game", ({ level, score }) => {
       player.jump(CURRENT_JUMP_FORCE);
     }
   });
-  // load in some sprites
+
+  // timer functionality in game scene
   const timer = add([
     text("0"),
     pos(90, 70),
@@ -335,6 +338,31 @@ scene("game", ({ level, score }) => {
     if (timer.time <= 0) {
       go("lose", { score: scoreLabel.value });
     }
+  });
+
+  // Bullet functionality
+  // positon of player as parameter
+  function spawnBullet(p) {
+    // define a rectangular area around the player position
+    // give bullet as a tag
+    add([rect(6, 1), pos(p), origin("center"), color(1.5, 0.5, 1), "bullet"]);
+  }
+
+  // Releasing bullet functionality
+  keyPress("b", () => {
+    //if (isBig)
+    spawnBullet(player.pos.add(25, -10));
+  });
+
+  //move the bullets
+  action("bullet", (b) => {
+    //destroy(b);
+    b.move(ENEMY_SPEED * 3, 0);
+  });
+
+  collides("dangerous", "bullet", (d, b) => {
+    destroy(d);
+    destroy(b);
   });
 });
 
