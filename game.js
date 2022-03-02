@@ -8,13 +8,38 @@ const FALL_DEATH = 400;
 const TIME_LEFT = 50;
 const BULLET_TIME_LEFT = 2;
 let isBig = false;
+// the following is for canvas
+var canvas;
+var canvasWidth;
+var ctx;
+
+function init() {
+  canvas = document.getElementById("canvas");
+  if (canvas.getContext) {
+    ctx = canvas.getContext("2d");
+
+    window.addEventListener("resize", resizeCanvas, false);
+    window.addEventListener("orientationchange", resizeCanvas, false);
+    resizeCanvas();
+  }
+}
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+// camvas functionality ends
 kaboom({
   global: true,
   // enable full screen
   fullscreen: true,
   scale: 1,
   // for debug mode
+
+  canvas: document.querySelector("#mycanvas"),
   debug: true,
+
   clearColor: [0, 0, 0, 1],
 });
 
@@ -396,155 +421,156 @@ scene("game", ({ level, score }) => {
   // The mobile version begins
   //The following is for the mobile support
 
-  const moveLeft = () => {
-    player.move(-MOVE_SPEED, 0);
-  };
+  if (isTouch()) {
+    const moveLeft = () => {
+      player.move(-MOVE_SPEED, 0);
+    };
 
-  const moveRight = () => {
-    player.move(MOVE_SPEED, 0);
-  };
+    const moveRight = () => {
+      player.move(MOVE_SPEED, 0);
+    };
 
-  keyDown("left", () => {
-    keyDownOnMobile.left = true;
-  });
-
-  keyDown("right", () => {
-    keyDownOnMobile.right = true;
-  });
-
-  keyRelease("left", () => {
-    keyDownOnMobile.left = false;
-  });
-
-  keyRelease("right", () => {
-    keyDownOnMobile.right = false;
-  });
-
-  const leftButton = add([
-    sprite("left"),
-    pos(10, height() - 100),
-    //(opacity = 0.5),
-    //fixed(),
-    area(),
-  ]);
-
-  const rightButton = add([
-    sprite("right"),
-    pos(10, height() - 100),
-    //(opacity = 0.5),
-    //fixed(),
-    area(),
-  ]);
-
-  const actionButton = add([
-    sprite("highjump"),
-    pos(10, height() - 100),
-    //(opacity = 0.5),
-    //fixed(),
-    area(),
-  ]);
-
-  const shootButton = add([
-    sprite("shoot"),
-    pos(10, height() - 100),
-    //(opacity = 0.5),
-    // fixed(),
-    area(),
-  ]);
-  //because left and right buttons will be pressed
-  //we need to keep track of them
-  const keyDownOnMobile = {
-    left: false,
-    right: false,
-    // we will set them to true when these buttons are tocuhed
-  };
-
-  // onTouchStart gets called each time a new touch event is registered
-  onTouchStart((id, pos) => {
-    // we will check if the touch overlaps with the left button
-    if (leftButton.hasPoint(pos)) {
+    keyDown("left", () => {
       keyDownOnMobile.left = true;
-      leftButton.opacity = 1;
-    } else if (rightButton.hasPoint(pos)) {
+    });
+
+    keyDown("right", () => {
       keyDownOnMobile.right = true;
-      rightButton.opacity = 1;
-    } else if (jumpButton.hasPoint(pos)) {
-      jumping();
-      jumpButton.opacity = 1;
-    } else if (shootButton.hasPoint(pos)) {
-      spawnBullet(player.pos.add(25, -10));
+    });
 
-      shootButton.opacity = 1;
-    }
-  });
-  // But we if dont take the fingers off the screen then the touch persists so we need to make changes on
-  // onTouchEnd by using async functionality
-
-  const onTouchChanged = (_, pos) => {
-    // if the button is used for touch event registration and else is used for touch event de-registration
-    if (!leftButton.hasPoint(pos)) {
+    keyRelease("left", () => {
       keyDownOnMobile.left = false;
-      leftButton.opacity = 0.5;
-    } else {
-      keyDownOnMobile.left = true;
-      leftButton.opacity = 1;
-    }
+    });
 
-    if (!rightButton.hasPoint(pos)) {
+    keyRelease("right", () => {
       keyDownOnMobile.right = false;
-      rightButton.opacity = 0.5;
-    } else {
-      keyDownOnMobile.right = true;
-      rightButton.opacity = 1;
-    }
+    });
 
-    if (!jumpButton.hasPoint(pos)) {
-      jumpButton.opacity = 0.5;
-    } else {
-      jumpButton.opacity = 1;
-    }
+    const leftButton = add([
+      sprite("left"),
+      pos(10, height() - 100),
+      //(opacity = 0.5),
+      //fixed(),
+      area(),
+    ]);
 
-    if (!shootButton.hasPoint(pos)) {
-      shootButton.opacity = 0.5;
-    } else {
-      shootButton.opacity = 1;
-    }
-  };
+    const rightButton = add([
+      sprite("right"),
+      pos(10, height() - 100),
+      //(opacity = 0.5),
+      //fixed(),
+      area(),
+    ]);
 
-  // onTouchMove
+    const actionButton = add([
+      sprite("highjump"),
+      pos(10, height() - 100),
+      //(opacity = 0.5),
+      //fixed(),
+      area(),
+    ]);
 
-  onTouchMove(onTouchChanged);
-  onTouchEnd(onTouchChanged);
-  // onTouchEnd
-  /*
-  onTouchEnd((_, pos) => {
-    if (!leftButton.hasPoint(pos)) {
-      keyDownOnMobile.left = false;
-      leftButton.opacity = 0.5;
-    }
+    const shootButton = add([
+      sprite("shoot"),
+      pos(10, height() - 100),
+      //(opacity = 0.5),
+      // fixed(),
+      area(),
+    ]);
+    //because left and right buttons will be pressed
+    //we need to keep track of them
+    const keyDownOnMobile = {
+      left: false,
+      right: false,
+      // we will set them to true when these buttons are tocuhed
+    };
 
-    if (!rightButton.hasPoint(pos)) {
-      keyDownOnMobile.right = false;
-      rightButton.opacity = 0.5;
-    }
+    // onTouchStart gets called each time a new touch event is registered
+    onTouchStart((id, pos) => {
+      // we will check if the touch overlaps with the left button
+      if (leftButton.hasPoint(pos)) {
+        keyDownOnMobile.left = true;
+        leftButton.opacity = 1;
+      } else if (rightButton.hasPoint(pos)) {
+        keyDownOnMobile.right = true;
+        rightButton.opacity = 1;
+      } else if (jumpButton.hasPoint(pos)) {
+        jumping();
+        jumpButton.opacity = 1;
+      } else if (shootButton.hasPoint(pos)) {
+        spawnBullet(player.pos.add(25, -10));
 
-    if (!jumpButton.hasPoint(pos)) {
-      jumpButton.opacity = 0.5;
-    }
+        shootButton.opacity = 1;
+      }
+    });
+    // But we if dont take the fingers off the screen then the touch persists so we need to make changes on
+    // onTouchEnd by using async functionality
 
-    if (!shootButton.hasPoint(pos)) {
-      shootButton.opacity = 0.5;
-    }
-  });
-*/
-  onUpdate(() => {
-    if (keyDown.left) {
-      moveLeft();
-    } else if (keyDown.right) {
-      moveRight();
-    }
-  });
+    const onTouchChanged = (_, pos) => {
+      // if the button is used for touch event registration and else is used for touch event de-registration
+      if (!leftButton.hasPoint(pos)) {
+        keyDownOnMobile.left = false;
+        leftButton.opacity = 0.5;
+      } else {
+        keyDownOnMobile.left = true;
+        leftButton.opacity = 1;
+      }
 
+      if (!rightButton.hasPoint(pos)) {
+        keyDownOnMobile.right = false;
+        rightButton.opacity = 0.5;
+      } else {
+        keyDownOnMobile.right = true;
+        rightButton.opacity = 1;
+      }
+
+      if (!jumpButton.hasPoint(pos)) {
+        jumpButton.opacity = 0.5;
+      } else {
+        jumpButton.opacity = 1;
+      }
+
+      if (!shootButton.hasPoint(pos)) {
+        shootButton.opacity = 0.5;
+      } else {
+        shootButton.opacity = 1;
+      }
+    };
+
+    // onTouchMove
+
+    onTouchMove(onTouchChanged);
+    onTouchEnd(onTouchChanged);
+    // onTouchEnd
+
+    onTouchEnd((_, pos) => {
+      if (!leftButton.hasPoint(pos)) {
+        keyDownOnMobile.left = false;
+        leftButton.opacity = 0.5;
+      }
+
+      if (!rightButton.hasPoint(pos)) {
+        keyDownOnMobile.right = false;
+        rightButton.opacity = 0.5;
+      }
+
+      if (!jumpButton.hasPoint(pos)) {
+        jumpButton.opacity = 0.5;
+      }
+
+      if (!shootButton.hasPoint(pos)) {
+        shootButton.opacity = 0.5;
+      }
+    });
+
+    onUpdate(() => {
+      if (keyDown.left) {
+        moveLeft();
+      } else if (keyDown.right) {
+        moveRight();
+      }
+    });
+  }
   //The mobile version ends
 });
 
