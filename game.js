@@ -420,8 +420,9 @@ scene("game", ({ level, score }) => {
 
   // The mobile version begins
   //The following is for the mobile support
-
+  /*
   if (isTouch()) {
+    console.log(isTouch);
     const moveLeft = () => {
       player.move(-MOVE_SPEED, 0);
     };
@@ -571,6 +572,7 @@ scene("game", ({ level, score }) => {
       }
     });
   }
+  */
   //The mobile version ends
 });
 
