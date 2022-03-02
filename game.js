@@ -356,7 +356,7 @@ scene("game", ({ level, score }) => {
 
   //move the bullets
   action("bullet", (b) => {
-    //destroy(b);
+    destroy(b);
     b.move(ENEMY_SPEED * 3, 0);
   });
 
