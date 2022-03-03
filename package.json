@@ -1,0 +1,26 @@
+{
+  "name": "mario",
+  "version": "1.0.0",
+  "description": "on your device",
+  "scripts": {
+    "start": "parcel src/index.html -p 8000",
+    "build": "parcel build src/index.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KaushalPrudhvi/SuperMario.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KaushalPrudhvi/SuperMario/issues"
+  },
+  "homepage": "https://github.com/KaushalPrudhvi/SuperMario#readme",
+  "dependencies": {
+    "kaboom": "^2000.2.9"
+  },
+  "alias": {
+    "kaboom": "./node_modules/kaboom/dist/kaboom.mjs"
+  }
+}
