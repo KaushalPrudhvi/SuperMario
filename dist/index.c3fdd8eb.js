@@ -598,6 +598,7 @@ loadSprite("a", "agdsuPW.png");
 loadSprite("d", "7SNgoAe.png");
 loadSprite("highjump", "xfWsMOV.png");
 loadSprite("shoot", "mPlhKAi.png");
+// loadSound("./src/play.mp3");
 scene("game", ({ level , score  })=>{
     //create layers
     //An array
@@ -625,8 +626,8 @@ scene("game", ({ level , score  })=>{
             "                                                       ",
             "                                                       ",
             "     %    =*=%=                                        ",
-            "               -+         -+                         ",
-            "               ()      ^  ()  ^        ",
+            "               -+         -+                    -+   ",
+            "               ()      ^  ()  ^                 ()     ",
             "===============================   ==  = ===  ============== ", 
         ],
         [
@@ -664,12 +665,14 @@ scene("game", ({ level , score  })=>{
         "=": ()=>[
                 sprite("block"),
                 solid(),
-                area()
+                area(),
+                "brick"
             ]
         ,
         $: ()=>[
                 sprite("coin"),
-                "coin"
+                "coin",
+                area()
             ]
         ,
         "%": ()=>[
@@ -750,7 +753,8 @@ scene("game", ({ level , score  })=>{
                 sprite("blue-brick"),
                 solid(),
                 scale(0.5),
-                area()
+                area(),
+                "brick"
             ]
         ,
         z: ()=>[
@@ -864,6 +868,7 @@ scene("game", ({ level , score  })=>{
             // after destroying replace with an unboxed so that he cam jump onto it and collect the mushroom
             gameLevel.spawn("}", obj.gridPos.sub(0, 0));
         }
+        if (obj.is("brick")) destroy(obj);
     });
     player.collides("mushroom", (m)=>{
         // pick a mushroom and destroy the object
@@ -881,7 +886,10 @@ scene("game", ({ level , score  })=>{
     // Let us make evils move
     onUpdate("dangerous", (d)=>{
         if (d.pos.x > player.pos.x) d.move(-ENEMY_SPEED * 3, 0);
-        else d.move(ENEMY_SPEED * 3, 0);
+        else if (d.pos.x < player.pos.x) d.move(ENEMY_SPEED * 3, 0);
+    // else if (d.pos.y < player.pos.y) d.move(0, -ENEMY_SPEED * 3);
+    // else if (d.pos.y < player.pos.y) d.move(0, -ENEMY_SPEED * 3);
+    // else if (d.pos > player.pos) d.move(-ENEMY_SPEED, -ENEMY_SPEED);
     });
     // if player collides with anythig with dangerous
     // big mario becomes small
@@ -970,7 +978,8 @@ scene("game", ({ level , score  })=>{
             pos(p),
             origin("center"),
             color(1, 500, 10),
-            "bullet"
+            "bullet",
+            area(), 
         ]);
     }
     // Releasing bullet functionality
@@ -981,7 +990,7 @@ scene("game", ({ level , score  })=>{
         spawnBullet(player.pos.add(25, -10));
     });
     //move the bullets
-    action("bullet", (b)=>{
+    onUpdate("bullet", (b)=>{
         //destroy(b);
         b.move(ENEMY_SPEED * 3, 0);
         // whenever a bullet is released decrement the time given to it.
@@ -990,7 +999,7 @@ scene("game", ({ level , score  })=>{
     });
     onCollide("dangerous", "bullet", (d, b)=>{
         destroy(d);
-        cleanup(b);
+        destroy(b);
     });
     // The mobile version begins
     //The following is for the mobile support

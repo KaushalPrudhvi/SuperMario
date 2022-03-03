@@ -1,24 +1,25 @@
-53
+54
 73C:\Users\kaush\OneDrive\Desktop\Mario\node_modules\kaboom\dist\kaboom.mjs132907277287219728 0
 48C:\Users\kaush\OneDrive\Desktop\Mario\src\bg.jpg132907284025350000 0
 50C:\Users\kaush\OneDrive\Desktop\Mario\src\store.js132907479709251734 0
-42C:\Users\kaush\OneDrive\Desktop\Mario\dist132907565277579448 1
+42C:\Users\kaush\OneDrive\Desktop\Mario\dist132907941186484505 1
 45C:\Users\kaush\OneDrive\Desktop\Mario\game.js132907427668181089 0
 49C:\Users\kaush\OneDrive\Desktop\Mario\game.js.map132907427668244306 0
 50C:\Users\kaush\OneDrive\Desktop\Mario\node_modules132907277288168430 1
-41C:\Users\kaush\OneDrive\Desktop\Mario\src132907290596731664 1
-50C:\Users\kaush\OneDrive\Desktop\Mario\package.json132907480179116798 0
+41C:\Users\kaush\OneDrive\Desktop\Mario\src132907927744106413 1
+50C:\Users\kaush\OneDrive\Desktop\Mario\package.json132907934256431781 0
 55C:\Users\kaush\OneDrive\Desktop\Mario\package-lock.json132907277288116656 0
 68C:\Users\kaush\OneDrive\Desktop\Mario\node_modules\kaboom\kaboom.png132907277287338121 0
 47C:\Users\kaush\OneDrive\Desktop\Mario\README.md132907282348023377 0
 78C:\Users\kaush\OneDrive\Desktop\Mario\node_modules\kaboom\src\assets\sinko.png132907277287370886 0
-49C:\Users\kaush\OneDrive\Desktop\Mario\src\game.js132907565598679522 0
+49C:\Users\kaush\OneDrive\Desktop\Mario\src\game.js132907941185299685 0
 60C:\Users\kaush\OneDrive\Desktop\Mario\dist\index.c60331f8.js132907475627059484 0
 60C:\Users\kaush\OneDrive\Desktop\Mario\dist\index.ba953a43.js132907487733958076 0
-52C:\Users\kaush\OneDrive\Desktop\Mario\src\index.html132907527293852353 0
+52C:\Users\kaush\OneDrive\Desktop\Mario\src\index.html132907936650946378 0
 69C:\Users\kaush\OneDrive\Desktop\Mario\node_modules\.package-lock.json132907277288168430 0
+50C:\Users\kaush\OneDrive\Desktop\Mario\src\play.mp3132896944934244367 0
 57C:\Users\kaush\OneDrive\Desktop\Mario\node_modules\kaboom132907277287328149 1
-70C:\Users\kaush\OneDrive\Desktop\Mario\node_modules\kaboom\CHANGELOG.md132907321991229545 0
+70C:\Users\kaush\OneDrive\Desktop\Mario\node_modules\kaboom\CHANGELOG.md132907922760990734 0
 62C:\Users\kaush\OneDrive\Desktop\Mario\node_modules\kaboom\dist132907277287401377 1
 77C:\Users\kaush\OneDrive\Desktop\Mario\node_modules\kaboom\src\assets\sink.png132907277287350942 0
 77C:\Users\kaush\OneDrive\Desktop\Mario\node_modules\kaboom\src\assets\boom.png132907277287298218 0
@@ -37,7 +38,7 @@
 70C:\Users\kaush\OneDrive\Desktop\Mario\node_modules\kaboom\src\timer.ts132907277287767992 0
 70C:\Users\kaush\OneDrive\Desktop\Mario\node_modules\kaboom\src\utils.ts132907277287984685 0
 80C:\Users\kaush\OneDrive\Desktop\Mario\node_modules\kaboom\src\assets\apl386o.png132907277287278326 0
-53C:\Users\kaush\OneDrive\Desktop\Mario\dist\index.html132907564550285180 0
+53C:\Users\kaush\OneDrive\Desktop\Mario\dist\index.html132907937838122681 0
 77C:\Users\kaush\OneDrive\Desktop\Mario\node_modules\kaboom\src\assets\bean.png132907277287288240 0
 73C:\Users\kaush\OneDrive\Desktop\Mario\node_modules\kaboom\dist\kaboom.cjs132907277286614662 0
 77C:\Users\kaush\OneDrive\Desktop\Mario\node_modules\kaboom\dist\kaboom.cjs.map132907277286933548 0
@@ -45,10 +46,10 @@
 72C:\Users\kaush\OneDrive\Desktop\Mario\node_modules\kaboom\dist\kaboom.js132907277286822965 0
 76C:\Users\kaush\OneDrive\Desktop\Mario\node_modules\kaboom\dist\kaboom.js.map132907277287013344 0
 77C:\Users\kaush\OneDrive\Desktop\Mario\node_modules\kaboom\dist\kaboom.mjs.map132907277287129450 0
-58C:\Users\kaush\OneDrive\Desktop\Mario\dist\bg.e7777e2d.jpg132907564550325082 0
+58C:\Users\kaush\OneDrive\Desktop\Mario\dist\bg.e7777e2d.jpg132907924851584385 0
 64C:\Users\kaush\OneDrive\Desktop\Mario\dist\index.c60331f8.js.map132907475627159855 0
 64C:\Users\kaush\OneDrive\Desktop\Mario\dist\index.ba953a43.js.map132907487734115108 0
-60C:\Users\kaush\OneDrive\Desktop\Mario\dist\index.c3fdd8eb.js132907565277266339 0
-64C:\Users\kaush\OneDrive\Desktop\Mario\dist\index.c3fdd8eb.js.map132907565277461428 0
+60C:\Users\kaush\OneDrive\Desktop\Mario\dist\index.c3fdd8eb.js132907941186454477 0
+64C:\Users\kaush\OneDrive\Desktop\Mario\dist\index.c3fdd8eb.js.map132907941186474433 0
 60C:\Users\kaush\OneDrive\Desktop\Mario\dist\index.cce38867.js132907484736793595 0
 64C:\Users\kaush\OneDrive\Desktop\Mario\dist\index.cce38867.js.map132907484737041106 0

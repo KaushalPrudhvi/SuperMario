@@ -93,6 +93,9 @@ loadSprite("d", "7SNgoAe.png");
 loadSprite("highjump", "xfWsMOV.png");
 
 loadSprite("shoot", "mPlhKAi.png");
+
+// loadSound("./src/play.mp3");
+
 scene("game", ({ level, score }) => {
   //create layers
   //An array
@@ -116,8 +119,8 @@ scene("game", ({ level, score }) => {
       "                                                       ",
       "                                                       ",
       "     %    =*=%=                                        ",
-      "               -+         -+                         ",
-      "               ()      ^  ()  ^        ",
+      "               -+         -+                    -+   ",
+      "               ()      ^  ()  ^                 ()     ",
       "===============================   ==  = ===  ============== ",
     ],
     [
@@ -154,8 +157,8 @@ scene("game", ({ level, score }) => {
     // parameters 1: name of the sprite, 2: solid , 3: tag
 
     // load in some sprites
-    "=": () => [sprite("block"), solid(), area()],
-    $: () => [sprite("coin"), "coin"],
+    "=": () => [sprite("block"), solid(), area(), "brick"],
+    $: () => [sprite("coin"), "coin", area()],
     "%": () => [sprite("surprise"), solid(), "coin-surprise", area()],
     "*": () => [sprite("surprise"), solid(), "mushroom-surprise", area()],
     "}": () => [sprite("unboxed"), solid(), area()],
@@ -173,7 +176,7 @@ scene("game", ({ level, score }) => {
     "#": () => [sprite("mushroom"), solid(), "mushroom", body(), area()],
 
     "!": () => [sprite("blue-block"), solid(), scale(0.5), area()],
-    "£": () => [sprite("blue-brick"), solid(), scale(0.5), area()],
+    "£": () => [sprite("blue-brick"), solid(), scale(0.5), area(), "brick"],
 
     z: () => [
       sprite("blue-evil-shroom"),
@@ -288,6 +291,10 @@ scene("game", ({ level, score }) => {
       // after destroying replace with an unboxed so that he cam jump onto it and collect the mushroom
       gameLevel.spawn("}", obj.gridPos.sub(0, 0));
     }
+
+    if (obj.is("brick")) {
+      destroy(obj);
+    }
   });
 
   player.collides("mushroom", (m) => {
@@ -311,7 +318,10 @@ scene("game", ({ level, score }) => {
 
   onUpdate("dangerous", (d) => {
     if (d.pos.x > player.pos.x) d.move(-ENEMY_SPEED * 3, 0);
-    else d.move(ENEMY_SPEED * 3, 0);
+    else if (d.pos.x < player.pos.x) d.move(ENEMY_SPEED * 3, 0);
+    // else if (d.pos.y < player.pos.y) d.move(0, -ENEMY_SPEED * 3);
+    // else if (d.pos.y < player.pos.y) d.move(0, -ENEMY_SPEED * 3);
+    // else if (d.pos > player.pos) d.move(-ENEMY_SPEED, -ENEMY_SPEED);
   });
   // if player collides with anythig with dangerous
   // big mario becomes small
@@ -407,7 +417,14 @@ scene("game", ({ level, score }) => {
   function spawnBullet(p) {
     // define a rectangular area around the player position
     // give bullet as a tag
-    add([rect(10, 1), pos(p), origin("center"), color(1, 500, 10), "bullet"]);
+    add([
+      rect(10, 1),
+      pos(p),
+      origin("center"),
+      color(1, 500, 10),
+      "bullet",
+      area(),
+    ]);
   }
 
   // Releasing bullet functionality
@@ -419,7 +436,7 @@ scene("game", ({ level, score }) => {
   });
 
   //move the bullets
-  action("bullet", (b) => {
+  onUpdate("bullet", (b) => {
     //destroy(b);
 
     b.move(ENEMY_SPEED * 3, 0);
@@ -429,10 +446,9 @@ scene("game", ({ level, score }) => {
       destroy(b);
     }
   });
-
   onCollide("dangerous", "bullet", (d, b) => {
     destroy(d);
-    cleanup(b);
+    destroy(b);
   });
 
   // The mobile version begins
