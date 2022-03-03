@@ -10,13 +10,13 @@ const TIME_LEFT = 50;
 const BULLET_TIME_LEFT = 4;
 let isBig = false;
 // the following is for canvas'
-/*
+
 var canvas;
 var canvasWidth;
 var ctx;
 
 function init() {
-  canvas = document.getElementById("canvas");
+  canvas = document.getElementById("#mycanvas");
   if (canvas.getContext) {
     ctx = canvas.getContext("2d");
 
@@ -30,13 +30,15 @@ function resizeCanvas() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 }
-*/
+
 // camvas functionality end
 kaboom({
   global: true,
   // enable full screen
   fullscreen: true,
-  scale: 1,
+  width: window.innerWidth,
+  height: window.innerHeight,
+  //scale: 1,
   background: [0, 0, 0, 1],
   // for debug mode
   //isTouch= false,
@@ -112,15 +114,15 @@ scene("game", ({ level, score }) => {
       "                                                       ",
       "                                                       ",
       "        ==*==%==                                               ",
-      "               ^^                                           ",
+      "                                                         ",
       "                                                      ",
-      "                                                       ",
+      "           ^^^^^^                                            ",
       "           ============================                                             ",
       "                                                       ",
       "                                                       ",
       "     %    =*=%=                                        ",
       "               -+         -+                    -+   ",
-      "               ()      ^  ()  ^                 ()     ",
+      "         ^^^^^^      ()      ^  ()  ^                 ()     ",
       "===============================   ==  = ===  ============== ",
     ],
     [
@@ -405,12 +407,12 @@ scene("game", ({ level, score }) => {
     },
   ]);
 
-  onUpdate(() => {
-    (timer.time -= dt()), (timer.text = timer.time.toFixed(2));
-    if (timer.time <= 0) {
-      go("lose", { score: scoreLabel.value });
-    }
-  });
+  // onUpdate(() => {
+  //   (timer.time -= dt()), (timer.text = timer.time.toFixed(2));
+  //   if (timer.time <= 0) {
+  //     go("lose", { score: scoreLabel.value });
+  //   }
+  // });
 
   // Bullet functionality
   // positon of player as parameter

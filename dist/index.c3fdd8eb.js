@@ -533,32 +533,30 @@ const TIME_LEFT = 50;
 const BULLET_TIME_LEFT = 4;
 let isBig = false;
 // the following is for canvas'
-/*
 var canvas;
 var canvasWidth;
 var ctx;
-
 function init() {
-  canvas = document.getElementById("canvas");
-  if (canvas.getContext) {
-    ctx = canvas.getContext("2d");
-
-    window.addEventListener("resize", resizeCanvas, false);
-    window.addEventListener("orientationchange", resizeCanvas, false);
-    resizeCanvas();
-  }
+    canvas = document.getElementById("#mycanvas");
+    if (canvas.getContext) {
+        ctx = canvas.getContext("2d");
+        window.addEventListener("resize", resizeCanvas, false);
+        window.addEventListener("orientationchange", resizeCanvas, false);
+        resizeCanvas();
+    }
 }
-
 function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 }
-*/ // camvas functionality end
+// camvas functionality end
 _kaboomDefault.default({
     global: true,
     // enable full screen
     fullscreen: true,
-    scale: 1,
+    width: window.innerWidth,
+    height: window.innerHeight,
+    //scale: 1,
     background: [
         0,
         0,
@@ -619,15 +617,15 @@ scene("game", ({ level , score  })=>{
             "                                                       ",
             "                                                       ",
             "        ==*==%==                                               ",
-            "               ^^                                           ",
+            "                                                         ",
             "                                                      ",
-            "                                                       ",
+            "           ^^^^^^                                            ",
             "           ============================                                             ",
             "                                                       ",
             "                                                       ",
             "     %    =*=%=                                        ",
             "               -+         -+                    -+   ",
-            "               ()      ^  ()  ^                 ()     ",
+            "         ^^^^^^      ()      ^  ()  ^                 ()     ",
             "===============================   ==  = ===  ============== ", 
         ],
         [
@@ -962,12 +960,12 @@ scene("game", ({ level , score  })=>{
             time: BULLET_TIME_LEFT
         }, 
     ]);
-    onUpdate(()=>{
-        timer1.time -= dt(), timer1.text = timer1.time.toFixed(2);
-        if (timer1.time <= 0) go("lose", {
-            score: scoreLabel.value
-        });
-    });
+    // onUpdate(() => {
+    //   (timer.time -= dt()), (timer.text = timer.time.toFixed(2));
+    //   if (timer.time <= 0) {
+    //     go("lose", { score: scoreLabel.value });
+    //   }
+    // });
     // Bullet functionality
     // positon of player as parameter
     function spawnBullet(p) {
