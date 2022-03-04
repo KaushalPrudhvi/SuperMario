@@ -39,7 +39,7 @@ kaboom({
   width: window.innerWidth,
   height: window.innerHeight,
   scale: 1,
-  background: [0, 0, 0, 1],
+  background: [0.1, 0, 0, 0],
   // for debug mode
   //isTouch= false,
   //canvas: document.querySelector("#mycanvas"),
