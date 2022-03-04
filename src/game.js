@@ -38,13 +38,13 @@ kaboom({
   fullscreen: true,
   width: window.innerWidth,
   height: window.innerHeight,
-  //scale: 1,
+  scale: 1,
   background: [0, 0, 0, 1],
   // for debug mode
   //isTouch= false,
   //canvas: document.querySelector("#mycanvas"),
 
-  debug: false,
+  debug: true,
 });
 
 //add scenes
@@ -116,13 +116,13 @@ scene("game", ({ level, score }) => {
       "        ==*==%==                                               ",
       "                                                         ",
       "                                                      ",
-      "           ^^^^^^                                            ",
+      "           ^^                                            ",
       "           ============================                                             ",
       "                                                       ",
       "                                                       ",
       "     %    =*=%=                                        ",
       "               -+         -+                    -+   ",
-      "         ^^^^^^      ()      ^  ()  ^                 ()     ",
+      "        ^^      ()      ^  ()  ^                 ()     ",
       "===============================   ==  = ===  ============== ",
     ],
     [

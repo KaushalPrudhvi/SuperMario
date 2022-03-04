@@ -556,7 +556,7 @@ _kaboomDefault.default({
     fullscreen: true,
     width: window.innerWidth,
     height: window.innerHeight,
-    //scale: 1,
+    scale: 1,
     background: [
         0,
         0,
@@ -566,7 +566,7 @@ _kaboomDefault.default({
     // for debug mode
     //isTouch= false,
     //canvas: document.querySelector("#mycanvas"),
-    debug: false
+    debug: true
 });
 //add scenes
 //coins
@@ -619,13 +619,13 @@ scene("game", ({ level , score  })=>{
             "        ==*==%==                                               ",
             "                                                         ",
             "                                                      ",
-            "           ^^^^^^                                            ",
+            "           ^^                                            ",
             "           ============================                                             ",
             "                                                       ",
             "                                                       ",
             "     %    =*=%=                                        ",
             "               -+         -+                    -+   ",
-            "         ^^^^^^      ()      ^  ()  ^                 ()     ",
+            "        ^^      ()      ^  ()  ^                 ()     ",
             "===============================   ==  = ===  ============== ", 
         ],
         [
